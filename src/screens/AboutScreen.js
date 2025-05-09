@@ -1,10 +1,14 @@
-import {View, Text} from 'react-native';
+import {View, Text, Button} from 'react-native';
 import React from 'react';
 
 const AboutScreen = () => {
   return (
     <View>
       <Text>About Screen</Text>
+      <Button title="Button" onPress={() => {}}/>
+      <View>
+        <Text>Hello</Text>
+      </View>
     </View>
   );
 };

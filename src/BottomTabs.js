@@ -5,6 +5,7 @@ import HomeScreen from './screens/HomeScreen';
 import AboutScreen from './screens/AboutScreen';
 import SettingsScreen from './screens/SettingsScreen';
 import ProfileScreen from './screens/ProfileScreen';
+import SignUp from './screens/SignUp';
 
 const Tab = createBottomTabNavigator();
 
@@ -35,8 +36,9 @@ const BottomTabs = () => {
       })}>
       <Tab.Screen name="HomeScreen" component={HomeScreen} />
       <Tab.Screen name="AboutScreen" component={AboutScreen} />
-      <Tab.Screen name="SettingsScreen" component={SettingsScreen} />
+      {/* <Tab.Screen name="SettingsScreen" component={SettingsScreen} /> */}
       <Tab.Screen name="ProfileScreen" component={ProfileScreen} />
+      <Tab.Screen name="SignUp" component={SignUp} />
     </Tab.Navigator>
   );
 };

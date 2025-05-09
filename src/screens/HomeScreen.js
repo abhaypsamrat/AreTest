@@ -4,6 +4,7 @@ import React, {useEffect, useState} from 'react';
 const HomeScreen = () => {
   const [users, setUsers] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
   useEffect(() => {
     fetchData();
@@ -17,6 +18,7 @@ const HomeScreen = () => {
       const data = await response.json();
       setUsers(data);
     } catch (error) {
+      setError('Failed to load data');
       console.error('Error fetching users:', error);
     } finally {
       setLoading(false);
@@ -41,12 +43,22 @@ const HomeScreen = () => {
     );
   }
 
+  if (error) {
+    return (
+      <View style={styles.center}>
+        <Text>{error}</Text>
+      </View>
+    );
+  }
+
   return (
     <View style={styles.container}>
+      <Text style={styles.heading}>User Details</Text>
       <FlatList
         data={users}
         keyExtractor={item => item.id.toString()}
         renderItem={renderItem}
+        showsVerticalScrollIndicator={false}
       />
     </View>
   );
@@ -56,6 +68,12 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     padding: 10,
+    backgroundColor: '#fff',
+  },
+  heading: {
+    fontSize: 20,
+    margin: 10,
+    textAlign: 'center',
   },
   card: {
     backgroundColor: '#f9f9f9',
