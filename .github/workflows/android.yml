@@ -29,7 +29,8 @@ jobs:
           java-version: '17'
 
       - name: Build Android release APK
-        run: .\android\gradlew.bat assembleRelease
+        working-directory: android
+        run: gradlew.bat assembleRelease
         shell: cmd
 
       # - name: Upload release APK
