@@ -32,8 +32,8 @@ jobs:
         run: .\android\gradlew.bat assembleRelease
         shell: cmd
 
-      - name: Upload release APK
-        uses: actions/upload-artifact@v3.1.3
-        with:
-          name: release-apk
-          path: android\app\build\outputs\apk\release\app-release.apk
+      # - name: Upload release APK
+      #   uses: actions/upload-artifact@v3.1.3
+      #   with:
+      #     name: release-apk
+      #     path: android\app\build\outputs\apk\release\app-release.apk
