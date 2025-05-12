@@ -2,7 +2,6 @@ import React, {useState} from 'react';
 import {
   Text,
   TextInput,
-  Button,
   StyleSheet,
   ScrollView,
   Image,
@@ -182,7 +181,12 @@ export default function SignUp() {
         style={styles.input}
       />
 
-      <Button title="Sign Up" onPress={handleSubmit} testID="signUpButton" />
+      <TouchableOpacity
+        style={styles.button}
+        onPress={handleSubmit}
+        testID="signUpButton">
+        <Text style={styles.buttonText}>Sign Up</Text>
+      </TouchableOpacity>
     </ScrollView>
   );
 }
@@ -219,5 +223,21 @@ const styles = StyleSheet.create({
   image: {
     width: '100%',
     height: '100%',
+  },
+  button: {
+    backgroundColor: '#6c63ff',
+    paddingVertical: 14,
+    alignItems: 'center',
+    borderRadius: 12,
+    elevation: 3,
+    shadowColor: '#000',
+    shadowOffset: {width: 0, height: 2},
+    shadowOpacity: 0.1,
+    shadowRadius: 4,
+  },
+  buttonText: {
+    color: '#fff',
+    fontSize: 16,
+    fontWeight: '600',
   },
 });

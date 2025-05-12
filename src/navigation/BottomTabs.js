@@ -1,11 +1,9 @@
 import React from 'react';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
-import Ionicons from 'react-native-vector-icons/Ionicons'; 
-import HomeScreen from './screens/HomeScreen';
-import AboutScreen from './screens/AboutScreen';
-import SettingsScreen from './screens/SettingsScreen';
-import ProfileScreen from './screens/ProfileScreen';
-import SignUp from './screens/SignUp';
+import Ionicons from 'react-native-vector-icons/Ionicons';
+import HomeScreen from '../screens/HomeScreen';
+import AboutScreen from '../screens/AboutScreen';
+import ProfileScreen from '../screens/ProfileScreen';
 
 const Tab = createBottomTabNavigator();
 
@@ -36,9 +34,7 @@ const BottomTabs = () => {
       })}>
       <Tab.Screen name="HomeScreen" component={HomeScreen} />
       <Tab.Screen name="AboutScreen" component={AboutScreen} />
-      {/* <Tab.Screen name="SettingsScreen" component={SettingsScreen} /> */}
       <Tab.Screen name="ProfileScreen" component={ProfileScreen} />
-      <Tab.Screen name="SignUp" component={SignUp} />
     </Tab.Navigator>
   );
 };
