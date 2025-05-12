@@ -1,30 +1,41 @@
 import React from 'react';
 import {render, fireEvent} from '@testing-library/react-native';
 import ProfileScreen from '../src/screens/ProfileScreen';
-import {useNavigation} from '@react-navigation/native';
 
-// Mock the useNavigation hook
-const mockOpenDrawer = jest.fn();
+const mockNavigate = jest.fn();
+
 jest.mock('@react-navigation/native', () => ({
   useNavigation: () => ({
-    openDrawer: mockOpenDrawer,
+    navigate: mockNavigate,
   }),
 }));
 
 describe('ProfileScreen', () => {
-  test('renders the screen title and button', () => {
-    const {getByText} = render(<ProfileScreen />);
-
-    // Check if the title and button exist
-    expect(getByText('Profile Screen')).toBeTruthy();
-    expect(getByText('Open Menu')).toBeTruthy();
+  beforeEach(() => {
+    mockNavigate.mockClear();
   });
 
-  test('calls openDrawer when button is pressed', () => {
+  it('renders title and subtitle', () => {
     const {getByText} = render(<ProfileScreen />);
+    expect(getByText('Welcome to Your Profile')).toBeTruthy();
+    expect(getByText('Access your account or create a new one')).toBeTruthy();
+  });
 
-    fireEvent.press(getByText('Open Menu'));
+  it('renders Sign In and Sign Up buttons', () => {
+    const {getByText} = render(<ProfileScreen />);
+    expect(getByText('Sign In')).toBeTruthy();
+    expect(getByText('Sign Up')).toBeTruthy();
+  });
 
-    expect(mockOpenDrawer).toHaveBeenCalled();
+  it('navigates to SignIn screen when Sign In is pressed', () => {
+    const {getByText} = render(<ProfileScreen />);
+    fireEvent.press(getByText('Sign In'));
+    expect(mockNavigate).toHaveBeenCalledWith('SignIn');
+  });
+
+  it('navigates to SignUp screen when Sign Up is pressed', () => {
+    const {getByText} = render(<ProfileScreen />);
+    fireEvent.press(getByText('Sign Up'));
+    expect(mockNavigate).toHaveBeenCalledWith('SignUp');
   });
 });

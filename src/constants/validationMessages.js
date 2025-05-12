@@ -7,6 +7,7 @@ const validationMessages = {
   invalidPhone: 'Phone number must be 10 digits.',
   invalidImage: 'Profile image must be a PNG file.',
   success: 'Form submitted successfully!',
+  signInSuccess: " 'Successfully Sign In",
 };
 
 export default validationMessages;
