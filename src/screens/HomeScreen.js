@@ -1,5 +1,12 @@
-import {View, Text, FlatList, StyleSheet} from 'react-native';
 import React, {useEffect, useState} from 'react';
+import {
+  View,
+  Text,
+  FlatList,
+  StyleSheet,
+  ActivityIndicator,
+  ScrollView,
+} from 'react-native';
 
 const HomeScreen = () => {
   const [users, setUsers] = useState([]);
@@ -19,13 +26,13 @@ const HomeScreen = () => {
       setUsers(data);
     } catch (error) {
       setError('Failed to load data');
-      console.error('Error fetching users:', error);
+      console.log('Error fetching users:', error);
     } finally {
       setLoading(false);
     }
   };
 
-  const renderItem = ({item}) => (
+  const renderUserCard = ({item}) => (
     <View style={styles.card}>
       <Text style={styles.name}>{item.name}</Text>
       <Text>{item.email}</Text>
@@ -38,6 +45,11 @@ const HomeScreen = () => {
   if (loading) {
     return (
       <View style={styles.center}>
+        <ActivityIndicator
+          testID="loading-indicator"
+          size="large"
+          color="blue"
+        />
         <Text>Loading...</Text>
       </View>
     );
@@ -52,28 +64,35 @@ const HomeScreen = () => {
   }
 
   return (
-    <View style={styles.container}>
-      <Text style={styles.heading}>User Details</Text>
+    <ScrollView style={styles.container}>
+      <Text style={styles.header}>Welcome to User App</Text>
+      <Text style={styles.subHeader}>Explore User Details</Text>
       <FlatList
         data={users}
         keyExtractor={item => item.id.toString()}
-        renderItem={renderItem}
-        showsVerticalScrollIndicator={false}
+        renderItem={renderUserCard}
+        scrollEnabled={false}
       />
-    </View>
+    </ScrollView>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
-    padding: 10,
+    padding: 16,
     backgroundColor: '#fff',
   },
-  heading: {
-    fontSize: 20,
-    margin: 10,
+  header: {
+    fontSize: 26,
+    fontWeight: 'bold',
+    marginTop: 10,
     textAlign: 'center',
+  },
+  subHeader: {
+    fontSize: 16,
+    color: '#666',
+    textAlign: 'center',
+    marginBottom: 20,
   },
   card: {
     backgroundColor: '#f9f9f9',
@@ -85,6 +104,7 @@ const styles = StyleSheet.create({
   name: {
     fontWeight: 'bold',
     fontSize: 16,
+    marginBottom: 4,
   },
   center: {
     flex: 1,
