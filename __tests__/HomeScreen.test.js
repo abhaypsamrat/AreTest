@@ -2,12 +2,20 @@ import React from 'react';
 import {render, waitFor} from '@testing-library/react-native';
 import HomeScreen from '../src/screens/HomeScreen';
 
-test('shows loading initially', () => {
-  const {getByText} = render(<HomeScreen />);
-  expect(getByText('Loading...')).toBeTruthy();
+beforeEach(() => {
+  jest.spyOn(console, 'log').mockImplementation(() => {});
+});
+afterEach(() => {
+  console.log.mockRestore();
 });
 
-// Mock fetch to return fake users
+test('shows loading initially', async () => {
+  const {getByText} = render(<HomeScreen />);
+  await waitFor(() => {
+    expect(getByText('Loading...')).toBeTruthy();
+  });
+});
+
 global.fetch = jest.fn(() =>
   Promise.resolve({
     json: () =>
@@ -36,12 +44,11 @@ test('renders user data after loading', async () => {
   });
 });
 
-test('displays error message when fetch fails', () => {
+test('displays error message when fetch fails', async () => {
   global.fetch = jest.fn(() => Promise.reject(new Error('Network Error')));
-
   const {getByText} = render(<HomeScreen />);
 
-  waitFor(() => {
+  await waitFor(() => {
     expect(getByText('Failed to load data')).toBeTruthy();
   });
 });

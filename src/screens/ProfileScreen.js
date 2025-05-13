@@ -36,7 +36,7 @@ const ProfileScreen = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#e9ecef',
+    backgroundColor: '#fff',
     justifyContent: 'center',
     alignItems: 'center',
     padding: 24,
