@@ -44,7 +44,7 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.1,
     shadowRadius: 6,
     elevation: 4,
-    width: '40%',
+    width: '30%',
     alignItems: 'center',
   },
   buttonText: {
