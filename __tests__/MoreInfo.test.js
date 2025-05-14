@@ -41,5 +41,12 @@ describe('MoreInfo Component', () => {
 
   it('toggles button text between show/hide', () => {
     const {getByTestId, getByText} = render(<MoreInfo />);
+    const toggleBtn = getByTestId(MORE_INFO_TEST_IDS.showButton);
+
+    fireEvent.press(toggleBtn);
+    expect(getByText(MORE_INFO_TEXT.hideDetails)).toBeTruthy();
+
+    fireEvent.press(toggleBtn);
+    expect(getByText(MORE_INFO_TEXT.showDetails)).toBeTruthy();
   });
 });
