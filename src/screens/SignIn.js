@@ -9,10 +9,15 @@ import {
   Alert,
 } from 'react-native';
 import validationMessages from '../constants/validationMessages';
+import {useNavigation} from '@react-navigation/native';
+import {useDispatch} from 'react-redux';
+import {setEmail as setEmailAction} from '../redux/slices/authSlice';
 
 export default function SignIn() {
+  const navigation = useNavigation();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const dispatch = useDispatch();
 
   const validateEmail = email => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
   const validatePassword = password =>
@@ -27,12 +32,14 @@ export default function SignIn() {
       Alert.alert('Validation Error', validationMessages.invalidEmail);
       return;
     }
-    if (!validatePassword(password)) {
-      Alert.alert('Validation Error', validationMessages.weakPassword);
-      return;
-    }
+    // if (!validatePassword(password)) {
+    //   Alert.alert('Validation Error', validationMessages.weakPassword);
+    //   return;
+    // }
 
+    dispatch(setEmailAction(email));
     Alert.alert('Success', validationMessages.signInSuccess);
+    navigation.navigate('BottomTabs');
   };
 
   return (
@@ -91,7 +98,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 16,
     marginBottom: 16,
     fontSize: 16,
-    borderColor: '#ccc',
+    borderColor: '#555',
     borderWidth: 1,
   },
   button: {

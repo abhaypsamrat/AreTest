@@ -6,7 +6,7 @@ export const MORE_INFO_TEST_IDS = {
 };
 
 export const MORE_INFO_TEXT = {
-  heading: 'More Information',
+  heading: 'Your Tasks',
   description:
     'This screen provides more detailed information about the app features.',
   showDetails: 'Show Details',

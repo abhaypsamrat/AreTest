@@ -5,6 +5,7 @@ module.exports = {
     'node_modules/(?!(react-native' +
       '|@react-native' +
       '|@react-navigation' +
+      '|react-redux' +
       '|react-native-reanimated' +
       '|react-native-gesture-handler' +
       '|react-native-safe-area-context' +

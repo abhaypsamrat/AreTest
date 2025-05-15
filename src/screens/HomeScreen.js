@@ -6,7 +6,9 @@ import {
   StyleSheet,
   ActivityIndicator,
   ScrollView,
+  SafeAreaView,
 } from 'react-native';
+import Header from '../components/Header';
 
 const HomeScreen = () => {
   const [users, setUsers] = useState([]);
@@ -42,19 +44,6 @@ const HomeScreen = () => {
     </View>
   );
 
-  if (loading) {
-    return (
-      <View style={styles.center}>
-        <ActivityIndicator
-          testID="loading-indicator"
-          size="large"
-          color="blue"
-        />
-        <Text>Loading...</Text>
-      </View>
-    );
-  }
-
   if (error) {
     return (
       <View style={styles.center}>
@@ -64,22 +53,34 @@ const HomeScreen = () => {
   }
 
   return (
-    <ScrollView style={styles.container}>
-      <Text style={styles.header}>Welcome to User App</Text>
-      <Text style={styles.subHeader}>Explore User Details</Text>
-      <FlatList
-        data={users}
-        keyExtractor={item => item.id.toString()}
-        renderItem={renderUserCard}
-        scrollEnabled={false}
-      />
-    </ScrollView>
+    <SafeAreaView>
+      <Header />
+      <ScrollView style={styles.container}>
+        <Text style={styles.header}>Welcome to User App</Text>
+        <Text style={styles.subHeader}>Explore User Details</Text>
+        {loading ? (
+          <View style={styles.center}>
+            <ActivityIndicator
+              testID="loading-indicator"
+              size="large"
+              color="blue"
+            />
+          </View>
+        ) : (
+          <FlatList
+            data={users}
+            keyExtractor={item => item.id.toString()}
+            renderItem={renderUserCard}
+            scrollEnabled={false}
+          />
+        )}
+      </ScrollView>
+    </SafeAreaView>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
-    padding: 16,
     backgroundColor: '#fff',
   },
   header: {

@@ -10,8 +10,13 @@ import {
 } from 'react-native';
 import {launchImageLibrary} from 'react-native-image-picker';
 import validationMessages from '../constants/validationMessages';
+import {useDispatch} from 'react-redux';
+import {setEmail as setEmailAction} from '../redux/slices/authSlice';
+import {useNavigation} from '@react-navigation/native';
 
 export default function SignUp() {
+  const navigation = useNavigation();
+  const dispatch = useDispatch();
   const [form, setForm] = useState({
     firstName: '',
     lastName: '',
@@ -99,13 +104,14 @@ export default function SignUp() {
       return;
     }
 
-    if (!profileImage || !profileImage.toLowerCase().endsWith('.png')) {
-      Alert.alert('Validation Error', validationMessages.invalidImage);
-      return;
-    }
+    // if (!profileImage || !profileImage.toLowerCase().endsWith('.png')) {
+    //   Alert.alert('Validation Error', validationMessages.invalidImage);
+    //   return;
+    // }
 
+    dispatch(setEmailAction(email));
     Alert.alert('Success', validationMessages.success);
-    console.log('Form Data:', form);
+    navigation.navigate('BottomTabs');
   };
 
   return (

@@ -1,36 +1,32 @@
-import {View, Text, StyleSheet, TouchableOpacity} from 'react-native';
-import React, {useState} from 'react';
+import React from 'react';
+import {View, Text, StyleSheet, ScrollView} from 'react-native';
 import {
   MORE_INFO_TEST_IDS,
   MORE_INFO_TEXT,
 } from '../constants/moreInfoConstants';
+import {useSelector} from 'react-redux';
 
 export default function MoreInfo() {
-  const [visible, setVisible] = useState(false);
+  const data = useSelector(state => state?.task?.tasks || []);
 
   return (
     <View style={styles.container}>
       <Text style={styles.heading} testID={MORE_INFO_TEST_IDS.heading}>
         {MORE_INFO_TEXT.heading}
       </Text>
-      <Text style={styles.paragraph} testID={MORE_INFO_TEST_IDS.description}>
-        This screen provides more detailed information about the app features.
-      </Text>
 
-      <TouchableOpacity
-        testID={MORE_INFO_TEST_IDS.showButton}
-        style={styles.button}
-        onPress={() => setVisible(!visible)}>
-        <Text style={styles.buttonText}>
-          {visible ? 'Hide Details' : 'Show Details'}
-        </Text>
-      </TouchableOpacity>
-
-      {visible && (
-        <Text testID={MORE_INFO_TEST_IDS.details}>
-          {MORE_INFO_TEXT.details}
-        </Text>
-      )}
+      <ScrollView contentContainerStyle={styles.taskList}>
+        {data.length > 0 ? (
+          data.map((task, index) => (
+            <View key={index} style={styles.taskCard}>
+              <Text style={styles.taskIndex}>#{index + 1}</Text>
+              <Text style={styles.taskText}>{task}</Text>
+            </View>
+          ))
+        ) : (
+          <Text style={styles.emptyText}>No tasks available</Text>
+        )}
+      </ScrollView>
     </View>
   );
 }
@@ -39,35 +35,49 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#fff',
-    justifyContent: 'center',
-    alignItems: 'center',
-    padding: 20,
+    paddingTop: 30,
+    paddingHorizontal: 20,
   },
   heading: {
-    fontSize: 20,
-    fontWeight: 'bold',
+    fontSize: 24,
+    fontWeight: '700',
+    color: '#2f3542',
+    marginBottom: 20,
+    alignSelf: 'center',
   },
-  paragraph: {
-    fontSize: 16,
-    marginTop: 10,
-    textAlign: 'center',
+  taskList: {
+    paddingBottom: 20,
   },
-  button: {
-    backgroundColor: '#007bff',
-    paddingVertical: 5,
-    borderRadius: 10,
-    marginTop: 10,
+  taskCard: {
+    backgroundColor: '#f5f6fa',
+    borderRadius: 12,
+    padding: 10,
+    marginBottom: 12,
     shadowColor: '#000',
-    shadowOffset: {width: 0, height: 3},
-    shadowOpacity: 0.1,
-    shadowRadius: 6,
-    elevation: 4,
-    width: '30%',
+    shadowOffset: {width: 0, height: 2},
+    shadowOpacity: 0.05,
+    shadowRadius: 4,
+    elevation: 2,
+    flexDirection: 'row',
     alignItems: 'center',
+    borderWidth: 1,
+    borderColor: '#777',
   },
-  buttonText: {
-    color: '#fff',
-    fontSize: 14,
+  taskIndex: {
+    fontSize: 16,
     fontWeight: '600',
+    color: '#1e90ff',
+    marginRight: 10,
+  },
+  taskText: {
+    fontSize: 16,
+    color: '#2f3542',
+    flexShrink: 1,
+  },
+  emptyText: {
+    fontSize: 16,
+    color: '#a4b0be',
+    textAlign: 'center',
+    marginTop: 50,
   },
 });
