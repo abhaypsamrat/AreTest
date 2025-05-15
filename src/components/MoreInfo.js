@@ -1,13 +1,26 @@
 import React from 'react';
-import {View, Text, StyleSheet, ScrollView} from 'react-native';
+import {
+  View,
+  Text,
+  StyleSheet,
+  ScrollView,
+  TouchableOpacity,
+} from 'react-native';
 import {
   MORE_INFO_TEST_IDS,
   MORE_INFO_TEXT,
 } from '../constants/moreInfoConstants';
-import {useSelector} from 'react-redux';
+import {useDispatch, useSelector} from 'react-redux';
+import Ionicons from 'react-native-vector-icons/Ionicons';
+import {deleteTask} from '../redux/slices/taskSlice';
 
 export default function MoreInfo() {
   const data = useSelector(state => state?.task?.tasks || []);
+  const dispatch = useDispatch();
+
+  const handleDelete = index => {
+    dispatch(deleteTask(index));
+  };
 
   return (
     <View style={styles.container}>
@@ -19,8 +32,13 @@ export default function MoreInfo() {
         {data.length > 0 ? (
           data.map((task, index) => (
             <View key={index} style={styles.taskCard}>
-              <Text style={styles.taskIndex}>#{index + 1}</Text>
-              <Text style={styles.taskText}>{task}</Text>
+              <View style={{flexDirection: 'row'}}>
+                <Text style={styles.taskIndex}>#{index + 1}</Text>
+                <Text style={styles.taskText}>{task}</Text>
+              </View>
+              <TouchableOpacity onPress={() => handleDelete(index)}>
+                <Ionicons name="trash" size={20} color="red" />
+              </TouchableOpacity>
             </View>
           ))
         ) : (
@@ -49,6 +67,8 @@ const styles = StyleSheet.create({
     paddingBottom: 20,
   },
   taskCard: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
     backgroundColor: '#f5f6fa',
     borderRadius: 12,
     padding: 10,

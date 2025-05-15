@@ -8,7 +8,8 @@ import {
   FlatList,
 } from 'react-native';
 import {useDispatch, useSelector} from 'react-redux';
-import {addTask} from '../redux/slices/taskSlice';
+import {addTask, deleteTask} from '../redux/slices/taskSlice';
+import Ionicons from 'react-native-vector-icons/Ionicons';
 
 export default function Task() {
   const [task, setTask] = useState('');
@@ -22,11 +23,20 @@ export default function Task() {
     setTask('');
   };
 
+  const handleDelete = index => {
+    dispatch(deleteTask(index));
+  };
+
   const renderItem = ({item, index}) => (
     <View style={styles.taskItem}>
       <Text style={styles.taskText}>
         {index + 1}. {item}
       </Text>
+      <TouchableOpacity
+        style={styles.iconContainer}
+        onPress={() => handleDelete(index)}>
+        <Ionicons name="trash" color="red" size={20} style={styles.icon} />
+      </TouchableOpacity>
     </View>
   );
 
@@ -109,20 +119,18 @@ const styles = StyleSheet.create({
     paddingBottom: 20,
   },
   taskItem: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
     backgroundColor: '#ddd',
     padding: 10,
     marginBottom: 10,
     borderRadius: 12,
-    shadowColor: '#000',
-    shadowOffset: {width: 0, height: 2},
-    shadowOpacity: 0.05,
-    shadowRadius: 4,
-    elevation: 2,
   },
   taskText: {
     fontSize: 16,
     color: '#333',
   },
+  iconContainer: {},
   emptyText: {
     textAlign: 'center',
     color: '#333',
