@@ -12,6 +12,7 @@ import validationMessages from '../constants/validationMessages';
 import {useNavigation} from '@react-navigation/native';
 import {useDispatch} from 'react-redux';
 import {setEmail as setEmailAction} from '../redux/slices/authSlice';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export default function SignIn() {
   const navigation = useNavigation();
@@ -23,7 +24,7 @@ export default function SignIn() {
   const validatePassword = password =>
     /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[\W_]).{6,}$/.test(password);
 
-  const handleLogin = () => {
+  const handleLogin = async () => {
     if (!email || !password) {
       Alert.alert('Validation Error', validationMessages.allFieldsRequired);
       return;
@@ -38,8 +39,8 @@ export default function SignIn() {
     // }
 
     dispatch(setEmailAction(email));
-    Alert.alert('Success', validationMessages.signInSuccess);
-    navigation.navigate('BottomTabs');
+    await AsyncStorage.setItem('userData', email);
+    navigation.replace('BottomTabs');
   };
 
   return (

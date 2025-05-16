@@ -14,8 +14,14 @@ const taskSlice = createSlice({
     deleteTask(state, action) {
       state.tasks.splice(action.payload, 1); // remove by index
     },
+    updateTask: (state, action) => {
+      const {index, newText} = action.payload;
+      if (state.tasks[index]) {
+        state.tasks[index] = newText;
+      }
+    },
   },
 });
 
-export const {addTask, deleteTask} = taskSlice.actions;
+export const {addTask, deleteTask, updateTask} = taskSlice.actions;
 export default taskSlice.reducer;

@@ -1,9 +1,27 @@
 import React from 'react';
-import {View, Text, StyleSheet, SafeAreaView} from 'react-native';
-import {useSelector} from 'react-redux';
+import {
+  View,
+  Text,
+  StyleSheet,
+  SafeAreaView,
+  TouchableOpacity,
+} from 'react-native';
+import {useDispatch, useSelector} from 'react-redux';
+import Icon from 'react-native-vector-icons/AntDesign';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import {clearEmail} from '../redux/slices/authSlice';
+import {useNavigation} from '@react-navigation/native';
 
 export default function Header() {
   const email = useSelector(state => state?.auth?.email);
+  const dispatch = useDispatch();
+  const navigation = useNavigation();
+
+  const handleSignOut = async () => {
+    await AsyncStorage.removeItem('userData');
+    dispatch(clearEmail(email));
+    navigation.navigate('SignIn');
+  };
 
   return (
     <SafeAreaView style={styles.safeArea}>
@@ -11,6 +29,9 @@ export default function Header() {
         <View style={styles.userInfo}>
           <Text style={styles.userText}>👤 {email || 'Guest'}</Text>
         </View>
+        <TouchableOpacity onPress={handleSignOut}>
+          <Icon name="logout" color="white" size={20} />
+        </TouchableOpacity>
       </View>
     </SafeAreaView>
   );

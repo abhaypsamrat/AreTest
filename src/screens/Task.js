@@ -8,13 +8,16 @@ import {
   FlatList,
 } from 'react-native';
 import {useDispatch, useSelector} from 'react-redux';
-import {addTask, deleteTask} from '../redux/slices/taskSlice';
+import {addTask, deleteTask, updateTask} from '../redux/slices/taskSlice';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 
 export default function Task() {
   const [task, setTask] = useState('');
   const taskList = useSelector(state => state.task.tasks);
   const dispatch = useDispatch();
+
+  const [editingIndex, setEditingIndex] = useState(null);
+  const [editedText, setEditedText] = useState('');
 
   const handleAddTask = () => {
     if (task.trim().length === 0) return;
@@ -27,16 +30,68 @@ export default function Task() {
     dispatch(deleteTask(index));
   };
 
+  const handleStartEdit = (index, currentText) => {
+    setEditingIndex(index);
+    setEditedText(currentText);
+  };
+
+  const handleSaveEdit = () => {
+    if (editedText.trim() === '') return;
+    dispatch(updateTask({index: editingIndex, newText: editedText}));
+    setEditingIndex(null);
+    setEditedText('');
+  };
+
   const renderItem = ({item, index}) => (
     <View style={styles.taskItem}>
-      <Text style={styles.taskText}>
-        {index + 1}. {item}
-      </Text>
-      <TouchableOpacity
-        style={styles.iconContainer}
-        onPress={() => handleDelete(index)}>
-        <Ionicons name="trash" color="red" size={20} style={styles.icon} />
-      </TouchableOpacity>
+      <View style={styles.taskTextContainer}>
+        {editingIndex === index ? (
+          <TextInput
+            value={editedText}
+            onChangeText={setEditedText}
+            style={styles.input}
+            autoFocus
+            multiline
+          />
+        ) : (
+          <Text style={styles.taskText}>
+            {index + 1}. {item}
+          </Text>
+        )}
+      </View>
+
+      <View style={styles.iconGroup}>
+        {editingIndex === index ? (
+          <>
+            <TouchableOpacity
+              style={styles.iconButton}
+              onPress={handleSaveEdit}>
+              <Ionicons name="checkmark-sharp" color="#4CAF50" size={22} />
+            </TouchableOpacity>
+            <TouchableOpacity
+              style={styles.iconButton}
+              onPress={() => {
+                setEditingIndex(null);
+                setEditedText('');
+              }}>
+              <Ionicons name="close" color="#FF4C4C" size={22} />
+            </TouchableOpacity>
+          </>
+        ) : (
+          <>
+            <TouchableOpacity
+              style={styles.iconButton}
+              onPress={() => handleStartEdit(index, item)}>
+              <Ionicons name="pencil" color="#1E90FF" size={20} />
+            </TouchableOpacity>
+            <TouchableOpacity
+              style={styles.iconButton}
+              onPress={() => handleDelete(index)}>
+              <Ionicons name="trash" color="#FF4C4C" size={20} />
+            </TouchableOpacity>
+          </>
+        )}
+      </View>
     </View>
   );
 
@@ -91,13 +146,12 @@ const styles = StyleSheet.create({
   input: {
     flex: 1,
     backgroundColor: '#fff',
-    paddingHorizontal: 15,
+    paddingHorizontal: 5,
     paddingVertical: 12,
     borderRadius: 12,
     fontSize: 16,
     borderWidth: 1,
     borderColor: '#777',
-    marginRight: 10,
   },
   button: {
     backgroundColor: '#4CAF50',
@@ -109,6 +163,7 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.3,
     shadowRadius: 4,
     elevation: 3,
+    marginLeft: 5,
   },
   buttonText: {
     color: '#fff',
@@ -121,16 +176,30 @@ const styles = StyleSheet.create({
   taskItem: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    backgroundColor: '#ddd',
+    alignItems: 'flex-start',
+    backgroundColor: '#f9f9f9',
     padding: 10,
-    marginBottom: 10,
+    marginBottom: 12,
     borderRadius: 12,
+    borderWidth: 1,
+    borderColor: '#ddd',
+  },
+  taskTextContainer: {
+    flex: 1,
   },
   taskText: {
     fontSize: 16,
     color: '#333',
+    flexWrap: 'wrap',
   },
-  iconContainer: {},
+  iconGroup: {
+    flexDirection: 'row',
+  },
+  iconButton: {
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginLeft: 8,
+  },
   emptyText: {
     textAlign: 'center',
     color: '#333',
