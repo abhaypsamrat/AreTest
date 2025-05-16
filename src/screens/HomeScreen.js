@@ -5,9 +5,9 @@ import {
   FlatList,
   StyleSheet,
   ActivityIndicator,
-  ScrollView,
   SafeAreaView,
 } from 'react-native';
+import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import Header from '../components/Header';
 
 const HomeScreen = () => {
@@ -36,11 +36,19 @@ const HomeScreen = () => {
 
   const renderUserCard = ({item}) => (
     <View style={styles.card}>
-      <Text style={styles.name}>{item.name}</Text>
-      <Text>{item.email}</Text>
-      <Text>{item.phone}</Text>
-      <Text>{item.address.city}</Text>
-      <Text>{item.company.name}</Text>
+      <FontAwesome
+        name="user-circle"
+        size={50}
+        color="#007bff"
+        style={styles.icon}
+      />
+      <View style={styles.cardContent}>
+        <Text style={styles.name}>{item.name}</Text>
+        <Text style={styles.email}>{item.email}</Text>
+        <Text style={styles.info}>{item.phone}</Text>
+        <Text style={styles.info}>{item.address.city}</Text>
+        <Text style={styles.company}>{item.company.name}</Text>
+      </View>
     </View>
   );
 
@@ -53,61 +61,81 @@ const HomeScreen = () => {
   }
 
   return (
-    <SafeAreaView>
+    <SafeAreaView style={styles.safeArea}>
       <Header />
-      <ScrollView style={styles.container}>
-        <Text style={styles.header}>Welcome to User App</Text>
-        <Text style={styles.subHeader}>Explore User Details</Text>
-        {loading ? (
-          <View style={styles.center}>
-            <ActivityIndicator
-              testID="loading-indicator"
-              size="large"
-              color="blue"
-            />
-          </View>
-        ) : (
-          <FlatList
-            data={users}
-            keyExtractor={item => item.id.toString()}
-            renderItem={renderUserCard}
-            scrollEnabled={false}
+      <Text style={styles.header}>Welcome to User App</Text>
+      <Text style={styles.subHeader}>Explore User Details</Text>
+      {loading ? (
+        <View style={styles.center}>
+          <ActivityIndicator
+            testID="loading-indicator"
+            size="large"
+            color="blue"
           />
-        )}
-      </ScrollView>
+        </View>
+      ) : (
+        <FlatList
+          data={users}
+          keyExtractor={item => item.id.toString()}
+          renderItem={renderUserCard}
+          numColumns={2}
+          contentContainerStyle={styles.listContent}
+        />
+      )}
     </SafeAreaView>
   );
 };
 
 const styles = StyleSheet.create({
-  container: {
+  safeArea: {
+    flex: 1,
     backgroundColor: '#fff',
   },
   header: {
-    fontSize: 26,
+    fontSize: 20,
     fontWeight: 'bold',
-    marginTop: 10,
     textAlign: 'center',
   },
   subHeader: {
     fontSize: 16,
     color: '#666',
     textAlign: 'center',
-    marginBottom: 20,
+    marginBottom: 5,
+  },
+  listContent: {
+    paddingBottom: 20,
   },
   card: {
-    backgroundColor: '#f9f9f9',
-    padding: 15,
-    marginBottom: 10,
-    borderRadius: 8,
-    elevation: 2,
+    padding: 5,
+    margin: 10,
+    flexDirection: 'column',
+    backgroundColor: '#f2f2f2',
+    borderRadius: 12,
+    elevation: 4,
+    alignItems: 'center',
+  },
+  cardContent: {
+    paddingHorizontal: 5,
   },
   name: {
     fontWeight: 'bold',
-    fontSize: 16,
-    marginBottom: 4,
+    fontSize: 14,
+  },
+  email: {
+    fontSize: 12,
+    color: '#555',
+  },
+  info: {
+    fontSize: 12,
+    color: '#777',
+  },
+  company: {
+    fontSize: 12,
+    color: '#888',
+    fontStyle: 'italic',
   },
   center: {
+    flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
   },
